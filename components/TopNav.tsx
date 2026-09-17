@@ -12,6 +12,7 @@ export function TopNav() {
 
   const isPortfolio = pathname === "/";
   const isImport = pathname === "/import";
+  const isData = pathname === "/data";
 
   return (
     <header className="sticky top-0 z-20 border-b border-bg-border bg-bg/95 backdrop-blur">
@@ -35,9 +36,17 @@ export function TopNav() {
           </Link>
         </nav>
         <div className="ml-auto flex items-center gap-3 text-xs">
-          <span className="rounded-full border border-bg-border bg-bg-panel px-3 py-1 text-ink-dim">
-            {datasetLabel}
-          </span>
+          <Link
+            href="/data"
+            title={datasetLabel}
+            className={`rounded-full border px-3 py-1 transition ${
+              isData
+                ? "border-class-seasonal/40 bg-class-seasonal/10 text-class-seasonal"
+                : "border-bg-border bg-bg-panel text-ink-dim hover:border-ink-faint hover:text-ink"
+            }`}
+          >
+            Borrower data
+          </Link>
           {!isDemo && (
             <button
               onClick={resetToDemo}
