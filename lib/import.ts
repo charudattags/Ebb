@@ -144,32 +144,95 @@ export function parseJSONDataset(text: string, knownCohorts: Cohort[]): ImportRe
   return { borrowers, cohorts: [...knownCohorts, ...extraCohorts], errors, warnings };
 }
 
-// ---------- CSV import ----------
+// ---------- Tabular import (.xlsx, .xls, .csv) via SheetJS, with column mapping ----------
 
-const CSV_COLUMNS = [
-  "borrower_id", "name", "trade", "region", "month",
-  "income", "expenses_essential", "expenses_business", "txn_count",
-  "emi_due", "amount_paid", "days_late",
+export const EXPECTED_FIELDS = [
+  { key: "borrower_id", label: "Borrower ID", required: true },
+  { key: "name", label: "Name", required: true },
+  { key: "trade", label: "Trade", required: true },
+  { key: "region", label: "Region", required: true },
+  { key: "month", label: "Month", required: true },
+  { key: "income", label: "Income", required: true },
+  { key: "expenses_essential", label: "Essential expenses", required: true },
+  { key: "expenses_business", label: "Business expenses", required: true },
+  { key: "txn_count", label: "Transaction count", required: true },
+  { key: "emi_due", label: "EMI due", required: true },
+  { key: "amount_paid", label: "Amount paid", required: true },
+  { key: "days_late", label: "Days late", required: true },
 ] as const;
 
-function parseCSVLine(line: string): string[] {
-  const out: string[] = [];
-  let cur = "";
-  let inQuotes = false;
-  for (let i = 0; i < line.length; i++) {
-    const c = line[i];
-    if (inQuotes) {
-      if (c === '"' && line[i + 1] === '"') { cur += '"'; i++; }
-      else if (c === '"') { inQuotes = false; }
-      else cur += c;
-    } else {
-      if (c === '"') inQuotes = true;
-      else if (c === ",") { out.push(cur); cur = ""; }
-      else cur += c;
+export type ExpectedFieldKey = (typeof EXPECTED_FIELDS)[number]["key"];
+/** Maps an expected field to the index of the detected header column that holds it. */
+export type ColumnMapping = Partial<Record<ExpectedFieldKey, number>>;
+
+export type ParsedSheet = { fileName: string; headers: string[]; rows: unknown[][] };
+
+const SYNONYMS: Record<ExpectedFieldKey, string[]> = {
+  borrower_id: ["borrower_id", "borrowerid", "id", "customer_id", "client_id", "borrower", "borrowerno"],
+  name: ["name", "borrower_name", "customer_name", "client_name", "fullname"],
+  trade: ["trade", "occupation", "business", "sector", "profession"],
+  region: ["region", "state", "location", "district", "area"],
+  month: ["month", "period", "date", "ym", "yyyymm", "monthyear"],
+  income: ["income", "revenue", "sales", "grossincome"],
+  expenses_essential: ["expenses_essential", "essentialexpenses", "householdexpenses", "essential", "livingexpenses"],
+  expenses_business: ["expenses_business", "businessexpenses", "stockexpenses", "business", "inventoryspend"],
+  txn_count: ["txn_count", "transactions", "transactioncount", "numtransactions", "txncount"],
+  emi_due: ["emi_due", "emi", "installmentdue", "due", "emiamount"],
+  amount_paid: ["amount_paid", "paid", "payment", "amountpaid", "paidamount"],
+  days_late: ["days_late", "latedays", "dayslate", "delay", "daysoverdue"],
+};
+
+function normalizeHeader(h: string): string {
+  return h.toLowerCase().replace(/[^a-z0-9]+/g, "");
+}
+
+/** Best-guess header→field mapping so most real spreadsheets need zero manual remapping. */
+export function guessMapping(headers: string[]): ColumnMapping {
+  const normalized = headers.map(normalizeHeader);
+  const mapping: ColumnMapping = {};
+  const used = new Set<number>();
+  for (const field of EXPECTED_FIELDS) {
+    const syns = SYNONYMS[field.key].map(normalizeHeader);
+    let bestIdx = -1;
+    for (let i = 0; i < normalized.length; i++) {
+      if (used.has(i)) continue;
+      if (syns.includes(normalized[i])) { bestIdx = i; break; }
+    }
+    if (bestIdx === -1) {
+      for (let i = 0; i < normalized.length; i++) {
+        if (used.has(i)) continue;
+        if (syns.some((s) => normalized[i].includes(s) || s.includes(normalized[i]))) { bestIdx = i; break; }
+      }
+    }
+    if (bestIdx !== -1) {
+      mapping[field.key] = bestIdx;
+      used.add(bestIdx);
     }
   }
-  out.push(cur);
-  return out.map((s) => s.trim());
+  return mapping;
+}
+
+const EXCEL_EPOCH_UTC = Date.UTC(1899, 11, 30);
+const MM_YYYY_RE = /^(0?[1-9]|1[0-2])[\/\-](\d{4})$/;
+const YYYY_SLASH_MM_RE = /^(\d{4})[\/\-](0?[1-9]|1[0-2])$/;
+
+/** Accepts YYYY-MM, MM/YYYY, YYYY/MM, an Excel date serial, or a JS Date. */
+export function normalizeMonthValue(value: unknown): string | null {
+  if (value instanceof Date && !Number.isNaN(value.getTime())) {
+    return `${value.getFullYear()}-${String(value.getMonth() + 1).padStart(2, "0")}`;
+  }
+  if (typeof value === "number" && Number.isFinite(value)) {
+    const d = new Date(EXCEL_EPOCH_UTC + value * 86400000);
+    if (!Number.isNaN(d.getTime())) return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}`;
+    return null;
+  }
+  const s = String(value ?? "").trim();
+  if (MONTH_RE.test(s)) return s;
+  const mmYyyy = s.match(MM_YYYY_RE);
+  if (mmYyyy) return `${mmYyyy[2]}-${mmYyyy[1].padStart(2, "0")}`;
+  const yyyyMm = s.match(YYYY_SLASH_MM_RE);
+  if (yyyyMm) return `${yyyyMm[1]}-${yyyyMm[2].padStart(2, "0")}`;
+  return null;
 }
 
 function modalEmi(records: { emi_due: number }[]): number {
@@ -181,98 +244,17 @@ function modalEmi(records: { emi_due: number }[]): number {
   return best;
 }
 
-export function parseCSVDataset(text: string, knownCohorts: Cohort[]): ImportResult {
-  const errors: ImportError[] = [];
-  const warnings: ImportWarning[] = [];
-  const lines = text.split(/\r?\n/).filter((l) => l.trim().length > 0);
-  if (lines.length < 2) {
-    return { borrowers: [], cohorts: knownCohorts, errors: [{ message: "CSV needs a header row plus at least one data row." }], warnings: [] };
-  }
+type RowGroup = { name: string; trade: string; region: string; records: MonthlyRecord[] };
 
-  const header = parseCSVLine(lines[0]).map((h) => h.trim());
-  const missingCols = CSV_COLUMNS.filter((c) => !header.includes(c));
-  if (missingCols.length > 0) {
-    return {
-      borrowers: [],
-      cohorts: knownCohorts,
-      errors: [{ message: `Missing required column(s): ${missingCols.join(", ")}.` }],
-      warnings: [],
-    };
-  }
-  const colIndex = Object.fromEntries(CSV_COLUMNS.map((c) => [c, header.indexOf(c)])) as Record<(typeof CSV_COLUMNS)[number], number>;
-
-  type RowGroup = {
-    name: string; trade: string; region: string;
-    records: MonthlyRecord[];
-  };
-  const groups = new Map<string, RowGroup>();
-
-  for (let li = 1; li < lines.length; li++) {
-    const rowNum = li + 1; // 1-indexed with header
-    const cells = parseCSVLine(lines[li]);
-    if (cells.length < CSV_COLUMNS.length) {
-      errors.push({ row: rowNum, message: `Row ${rowNum}: expected ${CSV_COLUMNS.length} columns, found ${cells.length}.` });
-      continue;
-    }
-    const borrowerId = cells[colIndex.borrower_id];
-    const month = cells[colIndex.month];
-    if (!borrowerId) {
-      errors.push({ row: rowNum, message: `Row ${rowNum}: missing borrower_id.` });
-      continue;
-    }
-    if (!MONTH_RE.test(month)) {
-      errors.push({ row: rowNum, message: `Row ${rowNum}: invalid month "${month}" (expected YYYY-MM).` });
-      continue;
-    }
-    const numericFields = ["income", "expenses_essential", "expenses_business", "txn_count", "emi_due", "amount_paid", "days_late"] as const;
-    const numbers: Record<string, number> = {};
-    let numericError = false;
-    for (const f of numericFields) {
-      const raw = cells[colIndex[f]];
-      const n = Number(raw);
-      if (raw === "" || Number.isNaN(n)) {
-        errors.push({ row: rowNum, message: `Row ${rowNum}: "${f}" is not a number ("${raw}").` });
-        numericError = true;
-      } else {
-        numbers[f] = n;
-      }
-    }
-    if (numericError) continue;
-
-    if (!groups.has(borrowerId)) {
-      groups.set(borrowerId, {
-        name: cells[colIndex.name] || borrowerId,
-        trade: cells[colIndex.trade] || "Unknown",
-        region: cells[colIndex.region] || "Unknown",
-        records: [],
-      });
-    }
-    groups.get(borrowerId)!.records.push({
-      month,
-      income: numbers.income,
-      expenses_essential: numbers.expenses_essential,
-      expenses_business: numbers.expenses_business,
-      txn_count: numbers.txn_count,
-      emi_due: numbers.emi_due,
-      amount_paid: numbers.amount_paid,
-      days_late: numbers.days_late,
-    });
-  }
-
-  if (errors.length > 0) {
-    return { borrowers: [], cohorts: knownCohorts, errors, warnings };
-  }
-
+/** Shared tail: cohort-matching, EMI/loan-term estimation, and Borrower assembly. */
+function finalizeGroups(groups: Map<string, RowGroup>, knownCohorts: Cohort[], warnings: ImportWarning[]): { borrowers: Borrower[]; cohorts: Cohort[] } {
   const cohortTradeIndex = new Map(knownCohorts.map((c) => [c.trade.toLowerCase(), c]));
   const extraCohorts: Cohort[] = [];
   const borrowers: Borrower[] = [];
   const defaultApr = 22;
 
   for (const [borrowerId, group] of groups) {
-    if (group.records.length < 1) {
-      errors.push({ message: `Borrower ${borrowerId}: no valid records.` });
-      continue;
-    }
+    if (group.records.length < 1) continue;
     group.records.sort((a, b) => a.month.localeCompare(b.month));
     const emi = modalEmi(group.records);
     const historyMonths = group.records.length;
@@ -295,15 +277,15 @@ export function parseCSVDataset(text: string, knownCohorts: Cohort[]): ImportRes
       warnings.push({ borrowerId, message: `Unknown trade "${group.trade}" for ${borrowerId} — using a flat seasonal profile.` });
     }
 
-    // CSV rows don't carry loan terms — estimate them from the EMI so the
-    // restructuring math has something sane to work with, and say so.
+    // Spreadsheet rows don't carry loan terms — estimate them from the EMI so
+    // the restructuring math has something sane to work with, and say so.
     const assumedTenure = historyMonths + 12;
     const r = defaultApr / 1200;
     const factor = Math.pow(1 + r, assumedTenure);
     const principal = Math.round((emi * (factor - 1)) / (r * factor));
     warnings.push({
       borrowerId,
-      message: `${borrowerId}: principal/APR/tenure aren't in the CSV — estimated from the modal EMI (₹${emi.toLocaleString("en-IN")}) at ${defaultApr}% APR.`,
+      message: `${borrowerId}: principal/APR/tenure aren't in the file — estimated from the modal EMI (₹${emi.toLocaleString("en-IN")}) at ${defaultApr}% APR.`,
     });
 
     borrowers.push({
@@ -322,11 +304,98 @@ export function parseCSVDataset(text: string, knownCohorts: Cohort[]): ImportRes
     });
   }
 
-  return { borrowers, cohorts: [...knownCohorts, ...extraCohorts], errors, warnings };
+  return { borrowers, cohorts: [...knownCohorts, ...extraCohorts] };
 }
 
-export function detectFormat(filename: string, text: string): "json" | "csv" {
-  if (filename.toLowerCase().endsWith(".json")) return "json";
-  if (filename.toLowerCase().endsWith(".csv")) return "csv";
-  return text.trim().startsWith("[") || text.trim().startsWith("{") ? "json" : "csv";
+/** Parses .xlsx/.xls/.csv into raw header + data rows. Runs entirely client-side via SheetJS. */
+export async function parseSheetFile(file: File): Promise<ParsedSheet> {
+  const XLSX = await import("xlsx");
+  const isCsv = file.name.toLowerCase().endsWith(".csv");
+  const workbook = isCsv
+    ? XLSX.read(await file.text(), { type: "string" })
+    : XLSX.read(await file.arrayBuffer(), { type: "array", cellDates: true });
+  const sheetName = workbook.SheetNames[0];
+  const sheet = workbook.Sheets[sheetName];
+  const rows = XLSX.utils.sheet_to_json<unknown[]>(sheet, { header: 1, raw: true, blankrows: false, defval: "" });
+  const headers = (rows[0] ?? []).map((h) => String(h ?? "").trim());
+  return { fileName: file.name, headers, rows: rows.slice(1) };
+}
+
+/** Validates a mapping against required fields, without touching row data yet. */
+export function validateMapping(mapping: ColumnMapping): string[] {
+  return EXPECTED_FIELDS.filter((f) => mapping[f.key] === undefined).map((f) => f.label);
+}
+
+/** Row-by-row validation + grouping, using a confirmed header→field mapping. Never throws; collects errors instead. */
+export function buildDatasetFromRows(sheet: ParsedSheet, mapping: ColumnMapping, knownCohorts: Cohort[]): ImportResult {
+  const errors: ImportError[] = [];
+  const warnings: ImportWarning[] = [];
+
+  const missing = validateMapping(mapping);
+  if (missing.length > 0) {
+    return { borrowers: [], cohorts: knownCohorts, errors: [{ message: `Missing mapping for required column(s): ${missing.join(", ")}.` }], warnings: [] };
+  }
+
+  const numericFields = ["income", "expenses_essential", "expenses_business", "txn_count", "emi_due", "amount_paid", "days_late"] as const;
+  const groups = new Map<string, RowGroup>();
+
+  sheet.rows.forEach((cells, i) => {
+    const rowNum = i + 2; // 1-indexed, plus the header row
+    const get = (key: ExpectedFieldKey) => cells[mapping[key]!];
+
+    const borrowerId = String(get("borrower_id") ?? "").trim();
+    if (!borrowerId) {
+      errors.push({ row: rowNum, message: `Row ${rowNum}: missing borrower_id.` });
+      return;
+    }
+    const month = normalizeMonthValue(get("month"));
+    if (!month) {
+      errors.push({ row: rowNum, message: `Row ${rowNum}: unrecognised month "${get("month")}" (expected YYYY-MM, MM/YYYY, or a date).` });
+      return;
+    }
+
+    const numbers: Record<string, number> = {};
+    let numericError = false;
+    for (const f of numericFields) {
+      const raw = get(f);
+      const n = typeof raw === "number" ? raw : Number(String(raw ?? "").replace(/,/g, "").trim());
+      if (raw === undefined || raw === "" || Number.isNaN(n)) {
+        errors.push({ row: rowNum, message: `Row ${rowNum}: "${f}" is not a number ("${raw}").` });
+        numericError = true;
+      } else {
+        numbers[f] = n;
+      }
+    }
+    if (numericError) return;
+
+    if (!groups.has(borrowerId)) {
+      groups.set(borrowerId, {
+        name: String(get("name") ?? "").trim() || borrowerId,
+        trade: String(get("trade") ?? "").trim() || "Unknown",
+        region: String(get("region") ?? "").trim() || "Unknown",
+        records: [],
+      });
+    }
+    groups.get(borrowerId)!.records.push({
+      month,
+      income: numbers.income,
+      expenses_essential: numbers.expenses_essential,
+      expenses_business: numbers.expenses_business,
+      txn_count: numbers.txn_count,
+      emi_due: numbers.emi_due,
+      amount_paid: numbers.amount_paid,
+      days_late: numbers.days_late,
+    });
+  });
+
+  if (errors.length > 0) {
+    return { borrowers: [], cohorts: knownCohorts, errors, warnings };
+  }
+
+  const { borrowers, cohorts } = finalizeGroups(groups, knownCohorts, warnings);
+  return { borrowers, cohorts, errors, warnings };
+}
+
+export function detectFormat(filename: string): "json" | "sheet" {
+  return filename.toLowerCase().endsWith(".json") ? "json" : "sheet";
 }

@@ -37,7 +37,7 @@ export function detectDistressPayments(records: MonthlyRecord[]): DistressPaymen
   const events: DistressPaymentEvent[] = [];
   for (const r of records) {
     const s = surplus(r);
-    if (r.amount_paid >= r.emi_due && s < r.emi_due) {
+    if (r.emi_due > 0 && r.amount_paid >= r.emi_due && s < r.emi_due) {
       events.push({ month: r.month, surplus: s, emiDue: r.emi_due, amountPaid: r.amount_paid });
     }
   }

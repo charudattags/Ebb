@@ -5,9 +5,10 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useBorrower, useCohortFor, useEbbStore } from "@/lib/store";
 import { analyzeBorrower, FLAT_FALLBACK_COHORT } from "@/lib/engine";
-import type { RestructureOptionKey } from "@/lib/engine/restructure";
+import type { RestructureOption, RestructureOptionKey } from "@/lib/engine/restructure";
 import { formatINR } from "@/lib/format";
 import { monthShort } from "@/lib/engine/month";
+import { playApprove, playClick } from "@/lib/sound";
 
 const OPTION_ORDER: RestructureOptionKey[] = ["BUFFER_ABSORB", "SEASONAL_WEIGHT", "SHORT_PAUSE", "EXTEND_TENURE"];
 
@@ -17,6 +18,7 @@ export default function RestructurePage() {
   const cohort = useCohortFor(borrower);
   const decisions = useEbbStore((s) => s.decisions);
   const setDecision = useEbbStore((s) => s.setDecision);
+  const soundOn = useEbbStore((s) => s.soundOn);
   const [selected, setSelected] = useState<RestructureOptionKey | null>(null);
   const [note, setNote] = useState("");
 
@@ -40,12 +42,18 @@ export default function RestructurePage() {
   const activeOption = optionByKey.get(activeKey)!;
 
   function record(status: "approved" | "overridden" | "requested_more_data") {
+    if (soundOn && status !== "requested_more_data") playApprove();
     setDecision(borrower!.id, {
       status,
       optionKey: activeKey,
       note,
       decidedAt: new Date().toISOString(),
     });
+  }
+
+  function selectOption(key: RestructureOptionKey) {
+    if (soundOn) playClick();
+    setSelected(key);
   }
 
   return (
@@ -78,7 +86,7 @@ export default function RestructurePage() {
           return (
             <button
               key={key}
-              onClick={() => setSelected(key)}
+              onClick={() => selectOption(key)}
               className={`flex flex-col rounded-xl border p-4 text-left transition ${
                 isActive
                   ? "border-class-seasonal bg-class-seasonal/10"
@@ -98,7 +106,12 @@ export default function RestructurePage() {
                 <p className="mt-2 text-xs text-class-structural">{option.viabilityNote}</p>
               )}
               <dl className="mt-3 space-y-1 text-xs">
-                <Metric label="Extra interest" value={formatINR(option.extraInterest)} warn={option.extraInterest > 0} />
+                <div className="flex justify-between">
+                  <dt className="text-ink-faint">Extra interest</dt>
+                  <dd className={option.extraInterest > 0 ? "text-sm font-semibold text-class-structural" : "text-ink-dim"}>
+                    {formatINR(option.extraInterest)}
+                  </dd>
+                </div>
                 <Metric label="Peak stress ratio" value={`${score.borrower.peakStressRatio.toFixed(2)}x`} warn={score.borrower.peakStressRatio > 1} />
                 <Metric label="Months over affordable" value={String(score.borrower.monthsOverAffordable)} warn={score.borrower.monthsOverAffordable > 0} />
                 <Metric label="Completion likelihood" value={`${Math.round(score.borrower.completionProbability * 100)}%`} />
@@ -115,6 +128,7 @@ export default function RestructurePage() {
         <h3 className="text-sm font-medium text-ink-dim">
           Payment schedule preview — {optionByKey.get(activeKey)?.label}
         </h3>
+        <ScheduleMorphBars schedule={activeOption.schedule} months={activeOption.months} allOptions={analysis.restructureOptions} />
         <div className="mt-3 overflow-x-auto">
           <table className="w-full min-w-[640px] text-left text-sm tabular">
             <thead className="text-xs uppercase tracking-wide text-ink-faint">
@@ -181,6 +195,34 @@ export default function RestructurePage() {
           Ebb recommends; a human decides. This choice is recorded for the file, not silently applied.
         </p>
       </section>
+    </div>
+  );
+}
+
+/** Bars are keyed by calendar month, not by option, so React reuses the same
+ * DOM nodes across a selection change and the height transition reads as a
+ * morph from one schedule into the next rather than a redraw. */
+function ScheduleMorphBars({
+  schedule,
+  months,
+  allOptions,
+}: {
+  schedule: number[];
+  months: string[];
+  allOptions: RestructureOption[];
+}) {
+  const max = Math.max(1, ...allOptions.flatMap((o) => o.schedule.concat(o.originalSchedule)));
+  return (
+    <div className="mt-4 flex h-28 gap-1.5">
+      {months.map((m, i) => (
+        <div key={m} className="flex h-full flex-1 flex-col items-center justify-end gap-1">
+          <div
+            className="w-full rounded-t bg-class-seasonal/70"
+            style={{ height: `${Math.max(2, (schedule[i] / max) * 100)}%`, transition: "height 450ms cubic-bezier(0.22,1,0.36,1)" }}
+          />
+          <span className="text-[10px] text-ink-faint">{monthShort(m)}</span>
+        </div>
+      ))}
     </div>
   );
 }

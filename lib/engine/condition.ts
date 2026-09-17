@@ -14,6 +14,8 @@ export type ClassificationResult = {
   confidenceLevel: ConfidenceResult["level"];
   confidenceReason: string;
   evidence: string[];
+  /** Parallel to `evidence` — the months (YYYY-MM) each line's claim rests on, for chart highlighting. */
+  evidenceMonths: string[][];
   seasonalIndexSource: "own" | "cohort";
   slope6: number | null;
   slope12: number | null;
@@ -126,6 +128,29 @@ export function classify(borrower: Borrower, cohort: Cohort): ClassificationResu
       ? findPriorSimilarDips(records, surplusValues, currentCM, overallMean, cohort.typical_recovery_weeks)
       : [];
 
+  // Thin-file guard — checked before every other rule. Below MIN_HISTORY there
+  // is no prior same-month to compare against, so a trend read from this few
+  // points is noise: never let it read as STRUCTURAL, TEMPORARY or IMPROVING.
+  if (H < MIN_MONTHS_FOR_OWN_SEASONALITY) {
+    const evidence = [
+      `Only ${H} month${H === 1 ? "" : "s"} of history — not enough to tell a seasonal dip from a real decline yet.`,
+      `Using the ${cohort.trade.toLowerCase()} cohort's typical pattern as a placeholder until more months come in.`,
+      `Current surplus is ${formatINR(currentSurplus)} against an EMI of ${formatINR(currentRecord.emi_due)}.`,
+    ];
+    const evidenceMonths = [[currentRecord.month], [currentRecord.month], [currentRecord.month]];
+    return {
+      label: "STABLE",
+      confidence: confidenceResult.value,
+      confidenceLevel: confidenceResult.level,
+      confidenceReason: confidenceResult.reason,
+      evidence,
+      evidenceMonths,
+      seasonalIndexSource: seasonality.source,
+      slope6,
+      slope12,
+    };
+  }
+
   // Rule 1 — SEASONAL
   if (H >= MIN_MONTHS_FOR_OWN_SEASONALITY && isLowNow && currentIndexVal < SEASONAL_DIP_THRESHOLD && priorDips.length >= 1) {
     const pctBelow = overallMean !== 0 ? Math.round((1 - currentSurplus / overallMean) * 100) : 0;
@@ -142,12 +167,18 @@ export function classify(borrower: Borrower, cohort: Cohort): ClassificationResu
       `${priorDips.length > 1 ? "Every time" : "That time"} she recovered within about ${cohort.typical_recovery_weeks} weeks as demand picked back up.`,
       businessNote,
     ];
+    const recoveredMonths = priorDips
+      .slice(-2)
+      .map((d) => (d.recoveredAt !== null ? records[d.recoveredAt].month : records[d.globalIndex].month));
+    const dipMonths = priorDips.slice(-2).map((d) => records[d.globalIndex].month);
+    const evidenceMonths = [[currentRecord.month], dipMonths, recoveredMonths, [currentRecord.month]];
     return {
       label: "SEASONAL",
       confidence: confidenceResult.value,
       confidenceLevel: confidenceResult.level,
       confidenceReason: confidenceResult.reason,
       evidence,
+      evidenceMonths,
       seasonalIndexSource: seasonality.source,
       slope6,
       slope12,
@@ -165,12 +196,18 @@ export function classify(borrower: Borrower, cohort: Cohort): ClassificationResu
       `6-month trend: ${formatSlopePct(slope6)}/month. 12-month trend: ${formatSlopePct(slope12)}/month — both consistently negative.`,
       `This month's surplus of ${formatINR(currentSurplus)} against an EMI of ${formatINR(currentRecord.emi_due)} leaves little room, and the trend shows no sign of reversing on its own.`,
     ];
+    const evidenceMonths = [
+      [records[Math.max(0, H - 12)].month, currentRecord.month],
+      records.slice(-12).map((r) => r.month),
+      [currentRecord.month],
+    ];
     return {
       label: "STRUCTURAL",
       confidence: confidenceResult.value,
       confidenceLevel: confidenceResult.level,
       confidenceReason: confidenceResult.reason,
       evidence,
+      evidenceMonths,
       seasonalIndexSource: seasonality.source,
       slope6,
       slope12,
@@ -201,12 +238,18 @@ export function classify(borrower: Borrower, cohort: Cohort): ClassificationResu
         `The last 3 months show a recovering trend (+${formatSlopePct(slope3!)}/month), unlike a structural decline.`,
         `This does not match her seasonal rhythm for ${monthLabel(currentRecord.month)} — it looks like a one-off setback, not a repeating pattern.`,
       ];
+      const evidenceMonths = [
+        [records[troughGlobalIdx].month],
+        records.slice(-3).map((r) => r.month),
+        [currentRecord.month],
+      ];
       return {
         label: "TEMPORARY",
         confidence: confidenceResult.value,
         confidenceLevel: confidenceResult.level,
         confidenceReason: confidenceResult.reason,
         evidence,
+        evidenceMonths,
         seasonalIndexSource: seasonality.source,
         slope6,
         slope12,
@@ -221,12 +264,18 @@ export function classify(borrower: Borrower, cohort: Cohort): ClassificationResu
       `Current surplus of ${formatINR(currentSurplus)} comfortably covers her EMI of ${formatINR(currentRecord.emi_due)}.`,
       `The business is growing, not just seasonally recovering — this is a sustained trend across both windows.`,
     ];
+    const evidenceMonths = [
+      records.slice(-12).map((r) => r.month),
+      [currentRecord.month],
+      records.slice(-12).map((r) => r.month),
+    ];
     return {
       label: "IMPROVING",
       confidence: confidenceResult.value,
       confidenceLevel: confidenceResult.level,
       confidenceReason: confidenceResult.reason,
       evidence,
+      evidenceMonths,
       seasonalIndexSource: seasonality.source,
       slope6,
       slope12,
@@ -242,12 +291,18 @@ export function classify(borrower: Borrower, cohort: Cohort): ClassificationResu
         : `Not enough history yet to fit a trend, but nothing in the recent record looks unusual.`,
       `EMI of ${formatINR(currentRecord.emi_due)} is well within her usual capacity.`,
     ];
+    const evidenceMonths = [
+      [currentRecord.month],
+      records.slice(-6).map((r) => r.month),
+      [currentRecord.month],
+    ];
     return {
       label: "STABLE",
       confidence: confidenceResult.value,
       confidenceLevel: confidenceResult.level,
       confidenceReason: confidenceResult.reason,
       evidence,
+      evidenceMonths,
       seasonalIndexSource: seasonality.source,
       slope6,
       slope12,

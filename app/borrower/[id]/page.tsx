@@ -1,11 +1,12 @@
 "use client";
 
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useBorrower, useCohortFor } from "@/lib/store";
 import { analyzeBorrower, FLAT_FALLBACK_COHORT } from "@/lib/engine";
 import { CashFlowChart } from "@/components/CashFlowChart";
-import { ClassificationCard } from "@/components/ClassificationCard";
+import { RecommendationPanel } from "@/components/RecommendationPanel";
 import { EarlyWarningsPanel } from "@/components/EarlyWarnings";
 import { formatINR, formatINRCompact } from "@/lib/format";
 import { monthLabel } from "@/lib/engine/month";
@@ -14,8 +15,18 @@ export default function BorrowerDetailPage() {
   const params = useParams<{ id: string }>();
   const borrower = useBorrower(params.id);
   const cohort = useCohortFor(borrower);
+  const [highlightMonths, setHighlightMonths] = useState<string[]>([]);
 
-  if (!borrower) {
+  const effectiveCohort = useMemo(
+    () => cohort ?? { ...FLAT_FALLBACK_COHORT, cohort_id: borrower?.cohort_id ?? "", trade: borrower?.trade ?? "" },
+    [cohort, borrower]
+  );
+  const analysis = useMemo(
+    () => (borrower ? analyzeBorrower(borrower, effectiveCohort) : null),
+    [borrower, effectiveCohort]
+  );
+
+  if (!borrower || !analysis) {
     return (
       <div className="rounded-xl border border-bg-border bg-bg-panel p-8 text-center text-ink-dim">
         Borrower {params.id} not found in the active dataset.
@@ -28,8 +39,6 @@ export default function BorrowerDetailPage() {
     );
   }
 
-  const effectiveCohort = cohort ?? { ...FLAT_FALLBACK_COHORT, cohort_id: borrower.cohort_id, trade: borrower.trade };
-  const analysis = analyzeBorrower(borrower, effectiveCohort);
   const last = borrower.monthly_records[borrower.monthly_records.length - 1];
 
   return (
@@ -39,7 +48,7 @@ export default function BorrowerDetailPage() {
           <Link href="/" className="text-xs text-ink-faint hover:text-ink-dim">
             ← Portfolio
           </Link>
-          <h1 className="mt-1 text-2xl font-semibold text-ink">{borrower.name}</h1>
+          <h1 className="mt-1 font-display text-2xl font-semibold text-ink">{borrower.name}</h1>
           <p className="text-sm text-ink-dim">
             {borrower.trade} · {borrower.region} · {borrower.history_months} months of history
           </p>
@@ -52,17 +61,22 @@ export default function BorrowerDetailPage() {
             href={`/borrower/${borrower.id}/restructure`}
             className="flex items-center rounded-lg border border-class-seasonal/40 bg-class-seasonal/10 px-4 py-2 text-sm font-medium text-class-seasonal transition hover:bg-class-seasonal/20"
           >
-            View restructure options →
+            View restructure options
           </Link>
         </div>
       </div>
 
       <section className="rounded-xl border border-bg-border bg-bg-panel p-5">
-        <CashFlowChart records={borrower.monthly_records} />
+        <CashFlowChart records={borrower.monthly_records} bufferMonths={analysis.buffer.months} highlightMonths={highlightMonths} />
       </section>
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <ClassificationCard result={analysis.classification} />
+        <RecommendationPanel
+          result={analysis.classification}
+          borrowerFirstName={borrower.name.split(" ")[0]}
+          historyMonths={borrower.history_months}
+          onHighlightMonths={setHighlightMonths}
+        />
         <EarlyWarningsPanel warnings={analysis.earlyWarnings} />
       </div>
 

@@ -7,6 +7,8 @@ import { analyzeBorrower, FLAT_FALLBACK_COHORT } from "@/lib/engine";
 import { stressRatio } from "@/lib/engine/stress";
 import type { ClassificationLabel } from "@/lib/engine/condition";
 import { classificationMeta } from "@/lib/classification-ui";
+import { Sparkline } from "@/components/Sparkline";
+import { playClick } from "@/lib/sound";
 import type { Cohort } from "@/lib/types";
 
 type Row = {
@@ -19,6 +21,7 @@ type Row = {
   stress: number;
   isLateNaive: boolean;
   actionNeeded: string;
+  surplusSeries: number[];
 };
 
 const LABEL_ORDER: ClassificationLabel[] = ["STRUCTURAL", "TEMPORARY", "SEASONAL", "IMPROVING", "STABLE"];
@@ -41,6 +44,7 @@ function actionFor(label: ClassificationLabel): string {
 export default function PortfolioPage() {
   const borrowers = useEbbStore((s) => s.borrowers);
   const cohorts = useEbbStore((s) => s.cohorts);
+  const soundOn = useEbbStore((s) => s.soundOn);
   const [filter, setFilter] = useState<ClassificationLabel | "ALL">("ALL");
   const [sortByStress, setSortByStress] = useState(true);
 
@@ -52,6 +56,7 @@ export default function PortfolioPage() {
       const analysis = analyzeBorrower(b, cohort);
       const last = b.monthly_records[b.monthly_records.length - 1];
       const isLateNaive = last.amount_paid < last.emi_due || last.days_late > 0;
+      const surplusSeries = b.monthly_records.slice(-12).map((r) => r.income - r.expenses_essential - r.expenses_business);
       return {
         id: b.id,
         name: b.name,
@@ -62,6 +67,7 @@ export default function PortfolioPage() {
         stress: stressRatio(last),
         isLateNaive,
         actionNeeded: actionFor(analysis.classification.label),
+        surplusSeries,
       };
     });
   }, [borrowers, cohortById]);
@@ -76,11 +82,16 @@ export default function PortfolioPage() {
     return r;
   }, [rows, filter, sortByStress]);
 
+  function click(fn: () => void) {
+    if (soundOn) playClick();
+    fn();
+  }
+
   return (
     <div className="space-y-6">
       <section className="rounded-xl border border-bg-border bg-bg-panel p-6">
         <p className="text-sm text-ink-dim">The pitch, computed live from the active dataset:</p>
-        <p className="mt-2 text-xl leading-relaxed text-ink">
+        <p className="mt-2 font-display text-xl leading-relaxed text-ink">
           A fixed schedule flags{" "}
           <span className="font-semibold text-class-structural">{fixedFlagged} of {rows.length}</span> borrowers as
           delinquent this month. Ebb flags{" "}
@@ -92,7 +103,7 @@ export default function PortfolioPage() {
       <section className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex flex-wrap items-center gap-2">
           <button
-            onClick={() => setFilter("ALL")}
+            onClick={() => click(() => setFilter("ALL"))}
             className={`rounded-full border px-3 py-1 text-xs transition ${
               filter === "ALL" ? "border-ink bg-bg-raised text-ink" : "border-bg-border text-ink-dim hover:text-ink"
             }`}
@@ -105,7 +116,7 @@ export default function PortfolioPage() {
             return (
               <button
                 key={label}
-                onClick={() => setFilter(label)}
+                onClick={() => click(() => setFilter(label))}
                 className={`rounded-full border px-3 py-1 text-xs transition ${meta.border} ${
                   filter === label ? meta.bg + " " + meta.text : "text-ink-dim hover:text-ink"
                 }`}
@@ -116,7 +127,7 @@ export default function PortfolioPage() {
           })}
         </div>
         <button
-          onClick={() => setSortByStress((v) => !v)}
+          onClick={() => click(() => setSortByStress((v) => !v))}
           className="rounded-full border border-bg-border px-3 py-1 text-xs text-ink-dim transition hover:text-ink"
         >
           Sort: {sortByStress ? "Stress ratio ↓" : "Name A–Z"}
@@ -130,6 +141,7 @@ export default function PortfolioPage() {
               <th className="px-4 py-3 font-medium">Borrower</th>
               <th className="px-4 py-3 font-medium">Trade</th>
               <th className="px-4 py-3 font-medium">Region</th>
+              <th className="px-4 py-3 font-medium">12-month rhythm</th>
               <th className="px-4 py-3 font-medium">Classification</th>
               <th className="px-4 py-3 font-medium">Confidence</th>
               <th className="px-4 py-3 font-medium">Stress ratio</th>
@@ -140,8 +152,8 @@ export default function PortfolioPage() {
             {visibleRows.map((row) => {
               const meta = classificationMeta(row.label);
               return (
-                <tr key={row.id} className="bg-bg-panel transition hover:bg-bg-raised">
-                  <td className="px-4 py-3">
+                <tr key={row.id} className={`${meta.bg} transition hover:brightness-125`}>
+                  <td className={`border-l-2 px-4 py-3 ${meta.border}`}>
                     <Link href={`/borrower/${row.id}`} className="font-medium text-ink hover:underline">
                       {row.name}
                     </Link>
@@ -149,6 +161,9 @@ export default function PortfolioPage() {
                   </td>
                   <td className="px-4 py-3 text-ink-dim">{row.trade}</td>
                   <td className="px-4 py-3 text-ink-dim">{row.region}</td>
+                  <td className="px-4 py-3">
+                    <Sparkline values={row.surplusSeries} color={meta.color} />
+                  </td>
                   <td className="px-4 py-3">
                     <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-xs ${meta.border} ${meta.bg} ${meta.text}`}>
                       {meta.label}
