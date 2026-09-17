@@ -1,0 +1,202 @@
+[
+  {
+    "cohort_id": "flower_seller",
+    "trade": "Flower seller",
+    "seasonal_profile": [
+      1.2581,
+      1.1613,
+      0.9677,
+      0.871,
+      0.7742,
+      0.5806,
+      0.5806,
+      0.6774,
+      0.871,
+      1.4516,
+      1.5484,
+      1.2581
+    ],
+    "typical_recovery_weeks": 6,
+    "note": "Peaks Oct-Feb (wedding & festival season, Diwali). Buys stock a month ahead of demand, so cash is tightest in Sept/Mar even though sales aren't at their lowest then. Quiet through the monsoon (Jun-Aug)."
+  },
+  {
+    "cohort_id": "construction_labor",
+    "trade": "Construction laborer",
+    "seasonal_profile": [
+      1.2692,
+      1.2692,
+      1.1538,
+      1.1538,
+      1.0385,
+      0.5769,
+      0.4615,
+      0.4615,
+      0.6923,
+      1.1538,
+      1.3846,
+      1.3846
+    ],
+    "typical_recovery_weeks": 4,
+    "note": "Work collapses across the monsoon (Jun-Aug) when sites shut down, and recovers once the ground dries out in autumn."
+  },
+  {
+    "cohort_id": "farm_produce",
+    "trade": "Farm produce seller",
+    "seasonal_profile": [
+      0.8852,
+      0.9836,
+      1.377,
+      1.2787,
+      0.8852,
+      0.6885,
+      0.6885,
+      0.7869,
+      0.9836,
+      1.2787,
+      1.2787,
+      0.8852
+    ],
+    "typical_recovery_weeks": 3,
+    "note": "Tracks two harvests: rabi (Mar-Apr) and kharif (Oct-Nov). Buys seed/inputs a month ahead of each harvest window."
+  },
+  {
+    "cohort_id": "tailor",
+    "trade": "Tailor",
+    "seasonal_profile": [
+      0.8504,
+      0.8504,
+      1.1339,
+      1.2283,
+      0.9449,
+      0.7559,
+      0.6614,
+      0.7559,
+      1.2283,
+      1.3228,
+      1.2283,
+      1.0394
+    ],
+    "typical_recovery_weeks": 3,
+    "note": "Wedding season (Mar-Apr) and festival season (Sep-Nov) drive orders; buys fabric a month ahead of both."
+  },
+  {
+    "cohort_id": "street_food",
+    "trade": "Street food vendor",
+    "seasonal_profile": [
+      1.0633,
+      1.0633,
+      1.0633,
+      1.0633,
+      1.0127,
+      0.8101,
+      0.7595,
+      0.8608,
+      1.0127,
+      1.1139,
+      1.1139,
+      1.0633
+    ],
+    "typical_recovery_weeks": 2,
+    "note": "Mostly steady footfall-driven trade with a mild monsoon dip (Jun-Aug) when fewer people are out in the evenings."
+  },
+  {
+    "cohort_id": "dairy",
+    "trade": "Dairy farmer",
+    "seasonal_profile": [
+      1.1046,
+      1.1046,
+      1.0042,
+      0.954,
+      0.9038,
+      0.9038,
+      0.9038,
+      0.9038,
+      0.954,
+      1.0042,
+      1.1046,
+      1.1548
+    ],
+    "typical_recovery_weeks": 2,
+    "note": "Demand and yield are both fairly stable year-round, with a small winter uptick."
+  },
+  {
+    "cohort_id": "handicraft",
+    "trade": "Handicraft maker",
+    "seasonal_profile": [
+      0.7742,
+      0.7742,
+      0.8226,
+      0.871,
+      0.871,
+      0.871,
+      0.9194,
+      0.9677,
+      1.0645,
+      1.3548,
+      1.4516,
+      1.2581
+    ],
+    "typical_recovery_weeks": 5,
+    "note": "Export and festival gifting orders concentrate Oct-Dec; buys raw material a month ahead of the order book filling up."
+  },
+  {
+    "cohort_id": "auto_rickshaw",
+    "trade": "Auto-rickshaw driver",
+    "seasonal_profile": [
+      1.0588,
+      1.1092,
+      1.0588,
+      0.958,
+      0.958,
+      0.8571,
+      0.7563,
+      0.8067,
+      0.958,
+      1.1597,
+      1.2101,
+      1.1092
+    ],
+    "typical_recovery_weeks": 3,
+    "note": "Fewer fares in the monsoon (Jun-Aug); picks up for exam season and festival travel (Oct-Feb). Vehicle upkeep spend rises just ahead of the festival rush."
+  },
+  {
+    "cohort_id": "tourism_vendor",
+    "trade": "Tourism vendor",
+    "seasonal_profile": [
+      1.4737,
+      1.5789,
+      1.2632,
+      1.0526,
+      0.8421,
+      0.5263,
+      0.4211,
+      0.4211,
+      0.5263,
+      0.9474,
+      1.3684,
+      1.5789
+    ],
+    "typical_recovery_weeks": 6,
+    "note": "Tourist season runs Nov-Feb; the monsoon (Jun-Sep) is a near-total washout. Stocks up for the season a month before visitors return."
+  },
+  {
+    "cohort_id": "grocery",
+    "trade": "Kirana store owner",
+    "seasonal_profile": [
+      0.9461,
+      0.9461,
+      0.9461,
+      0.9461,
+      0.9461,
+      0.9461,
+      0.9461,
+      0.9461,
+      0.9959,
+      1.195,
+      1.2448,
+      0.9959
+    ],
+    "typical_recovery_weeks": 2,
+    "note": "Steady staple demand year-round with a festival bump (Oct-Nov) that requires stocking up in September."
+  }
+]

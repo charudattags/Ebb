@@ -1,0 +1,224 @@
+borrower_id,name,trade,region,month,income,expenses_essential,expenses_business,txn_count,emi_due,amount_paid,days_late
+B001,Meena Devi,Flower seller,Kerala,2024-04,3866,1221,1175,161,1049,1049,0
+B001,Meena Devi,Flower seller,Kerala,2024-05,3400,1230,844,144,1049,1049,0
+B001,Meena Devi,Flower seller,Kerala,2024-06,2465,1231,882,99,1049,348,22
+B001,Meena Devi,Flower seller,Kerala,2024-07,2456,1232,1052,100,1049,1049,0
+B001,Meena Devi,Flower seller,Kerala,2024-08,2949,1241,1358,119,1049,268,15
+B001,Meena Devi,Flower seller,Kerala,2024-09,3732,1225,2269,158,1049,204,24
+B001,Meena Devi,Flower seller,Kerala,2024-10,6560,1242,2497,279,1049,1049,0
+B001,Meena Devi,Flower seller,Kerala,2024-11,7074,1255,2044,297,1049,1049,0
+B001,Meena Devi,Flower seller,Kerala,2024-12,5519,1208,2056,242,1049,1049,0
+B001,Meena Devi,Flower seller,Kerala,2025-01,5505,1254,1886,238,1049,1049,0
+B001,Meena Devi,Flower seller,Kerala,2025-02,5306,1222,1529,219,1049,1049,0
+B001,Meena Devi,Flower seller,Kerala,2025-03,4353,1232,1348,182,1049,1049,0
+B001,Meena Devi,Flower seller,Kerala,2025-04,3910,1232,1202,163,1049,1049,0
+B001,Meena Devi,Flower seller,Kerala,2025-05,3275,1215,888,145,1049,1049,0
+B001,Meena Devi,Flower seller,Kerala,2025-06,2451,1218,836,103,1049,299,15
+B001,Meena Devi,Flower seller,Kerala,2025-07,2460,1221,995,103,1049,1049,0
+B001,Meena Devi,Flower seller,Kerala,2025-08,2981,1219,1338,125,1049,356,17
+B001,Meena Devi,Flower seller,Kerala,2025-09,3847,1246,2402,160,1049,1049,0
+B001,Meena Devi,Flower seller,Kerala,2025-10,6470,1220,2564,280,1049,1049,0
+B001,Meena Devi,Flower seller,Kerala,2025-11,6998,1235,2031,296,1049,1049,0
+B001,Meena Devi,Flower seller,Kerala,2025-12,5563,1230,1957,236,1049,1049,0
+B001,Meena Devi,Flower seller,Kerala,2026-01,5694,1210,1779,235,1049,1049,0
+B001,Meena Devi,Flower seller,Kerala,2026-02,5106,1253,1517,215,1049,1049,0
+B001,Meena Devi,Flower seller,Kerala,2026-03,4201,1209,1314,181,1049,1049,0
+B001,Meena Devi,Flower seller,Kerala,2026-04,3777,1222,1199,161,1049,1049,0
+B001,Meena Devi,Flower seller,Kerala,2026-05,3275,1207,853,141,1049,1049,0
+B001,Meena Devi,Flower seller,Kerala,2026-06,2505,1225,869,102,1049,368,18
+B001,Meena Devi,Flower seller,Kerala,2026-07,2477,1223,1061,100,1049,1049,0
+B001,Meena Devi,Flower seller,Kerala,2026-08,2980,1214,1333,122,1049,375,18
+B001,Meena Devi,Flower seller,Kerala,2026-09,3829,1234,2257,163,1049,300,16
+B002,Ramesh Devi,Flower seller,Odisha,2024-08,7690,3120,3235,149,2950,1332,15
+B002,Ramesh Devi,Flower seller,Odisha,2024-09,9928,3121,5337,186,2950,2950,0
+B002,Ramesh Devi,Flower seller,Odisha,2024-10,16019,3155,5483,300,2950,2950,0
+B002,Ramesh Devi,Flower seller,Odisha,2024-11,17349,3042,4597,325,2950,2950,0
+B002,Ramesh Devi,Flower seller,Odisha,2024-12,14065,3040,4488,263,2950,2950,0
+B002,Ramesh Devi,Flower seller,Odisha,2025-01,13917,3105,4296,262,2950,2950,0
+B002,Ramesh Devi,Flower seller,Odisha,2025-02,13557,3112,3599,251,2950,2950,0
+B002,Ramesh Devi,Flower seller,Odisha,2025-03,10879,3085,3270,211,2950,2950,0
+B002,Ramesh Devi,Flower seller,Odisha,2025-04,10226,3078,2903,182,2950,2950,0
+B002,Ramesh Devi,Flower seller,Odisha,2025-05,9104,3123,2155,169,2950,2950,0
+B002,Ramesh Devi,Flower seller,Odisha,2025-06,6974,3057,2182,123,2950,1270,15
+B002,Ramesh Devi,Flower seller,Odisha,2025-07,6800,3155,2538,128,2950,949,19
+B002,Ramesh Devi,Flower seller,Odisha,2025-08,8132,3139,3258,149,2950,2950,0
+B002,Ramesh Devi,Flower seller,Odisha,2025-09,9863,3062,5298,188,2950,1325,22
+B002,Ramesh Devi,Flower seller,Odisha,2025-10,16075,3125,5810,301,2950,2950,0
+B002,Ramesh Devi,Flower seller,Odisha,2025-11,18008,3104,4675,334,2950,2950,0
+B002,Ramesh Devi,Flower seller,Odisha,2025-12,14207,3102,4688,265,2950,2950,0
+B002,Ramesh Devi,Flower seller,Odisha,2026-01,14741,3075,4191,258,2950,2950,0
+B002,Ramesh Devi,Flower seller,Odisha,2026-02,13015,3049,3443,248,2950,2950,0
+B002,Ramesh Devi,Flower seller,Odisha,2026-03,11306,3048,3322,203,2950,2950,0
+B002,Ramesh Devi,Flower seller,Odisha,2026-04,10263,3072,2874,182,2950,2950,0
+B002,Ramesh Devi,Flower seller,Odisha,2026-05,8789,3056,2256,165,2950,2950,0
+B002,Ramesh Devi,Flower seller,Odisha,2026-06,6643,3100,2189,123,2950,2950,0
+B002,Ramesh Devi,Flower seller,Odisha,2026-07,6757,3047,2489,126,2950,862,23
+B002,Ramesh Devi,Flower seller,Odisha,2026-08,7721,3095,3210,145,2950,1025,18
+B002,Ramesh Devi,Flower seller,Odisha,2026-09,10129,3148,5278,182,2950,1644,20
+B003,Suresh Reddy,Flower seller,Uttar Pradesh,2024-07,10743,2844,3823,69,2922,2922,0
+B003,Suresh Reddy,Flower seller,Uttar Pradesh,2024-08,10362,2879,3323,61,2922,2922,0
+B003,Suresh Reddy,Flower seller,Uttar Pradesh,2024-09,10294,2919,3759,67,2922,2922,0
+B003,Suresh Reddy,Flower seller,Uttar Pradesh,2024-10,10662,2823,3905,70,2922,2922,0
+B003,Suresh Reddy,Flower seller,Uttar Pradesh,2024-11,10258,2847,3707,69,2922,2922,0
+B003,Suresh Reddy,Flower seller,Uttar Pradesh,2024-12,9859,2818,3822,73,2922,2922,4
+B003,Suresh Reddy,Flower seller,Uttar Pradesh,2025-01,9592,2864,3513,68,2922,2922,0
+B003,Suresh Reddy,Flower seller,Uttar Pradesh,2025-02,9698,2853,3755,71,2922,2922,0
+B003,Suresh Reddy,Flower seller,Uttar Pradesh,2025-03,9248,2910,3557,66,2922,2046,11
+B003,Suresh Reddy,Flower seller,Uttar Pradesh,2025-04,8891,2904,3401,66,2922,2922,0
+B003,Suresh Reddy,Flower seller,Uttar Pradesh,2025-05,8780,2864,3420,64,2922,2063,11
+B003,Suresh Reddy,Flower seller,Uttar Pradesh,2025-06,8321,2908,3504,65,2922,1788,17
+B003,Suresh Reddy,Flower seller,Uttar Pradesh,2025-07,8085,2907,3682,70,2922,1221,15
+B003,Suresh Reddy,Flower seller,Uttar Pradesh,2025-08,7742,2873,3650,66,2922,987,20
+B003,Suresh Reddy,Flower seller,Uttar Pradesh,2025-09,8114,2895,3657,64,2922,1518,13
+B003,Suresh Reddy,Flower seller,Uttar Pradesh,2025-10,8160,2852,3704,72,2922,1199,15
+B003,Suresh Reddy,Flower seller,Uttar Pradesh,2025-11,7769,2875,3845,77,2922,2922,0
+B003,Suresh Reddy,Flower seller,Uttar Pradesh,2025-12,7363,2922,3788,70,2922,2922,0
+B003,Suresh Reddy,Flower seller,Uttar Pradesh,2026-01,7244,2859,3692,70,2922,593,23
+B003,Suresh Reddy,Flower seller,Uttar Pradesh,2026-02,7110,2820,3725,74,2922,2922,0
+B003,Suresh Reddy,Flower seller,Uttar Pradesh,2026-03,6572,2920,3776,70,2922,2922,0
+B003,Suresh Reddy,Flower seller,Uttar Pradesh,2026-04,6528,2850,3385,63,2922,216,30
+B003,Suresh Reddy,Flower seller,Uttar Pradesh,2026-05,6088,2926,3556,67,2922,0,37
+B003,Suresh Reddy,Flower seller,Uttar Pradesh,2026-06,5886,2837,3693,71,2922,0,32
+B003,Suresh Reddy,Flower seller,Uttar Pradesh,2026-07,5538,2867,3696,66,2922,0,33
+B003,Suresh Reddy,Flower seller,Uttar Pradesh,2026-08,5609,2850,3443,66,2922,0,31
+B003,Suresh Reddy,Flower seller,Uttar Pradesh,2026-09,5390,2922,3785,69,2922,0,29
+B004,Sunita Rathore,Flower seller,Madhya Pradesh,2025-02,13314,3488,4250,173,3295,3295,0
+B004,Sunita Rathore,Flower seller,Madhya Pradesh,2025-03,12741,3453,4086,164,3295,3295,0
+B004,Sunita Rathore,Flower seller,Madhya Pradesh,2025-04,12228,3484,4269,166,3295,3295,2
+B004,Sunita Rathore,Flower seller,Madhya Pradesh,2025-05,12486,3456,3930,159,3295,3295,4
+B004,Sunita Rathore,Flower seller,Madhya Pradesh,2025-06,12086,3508,3851,156,3295,3295,0
+B004,Sunita Rathore,Flower seller,Madhya Pradesh,2025-07,11886,3533,4132,153,3295,3295,0
+B004,Sunita Rathore,Flower seller,Madhya Pradesh,2025-08,11716,3436,4289,156,3295,3295,0
+B004,Sunita Rathore,Flower seller,Madhya Pradesh,2025-09,12654,3458,4547,167,3295,3295,0
+B004,Sunita Rathore,Flower seller,Madhya Pradesh,2025-10,14290,3439,4876,183,3295,3295,0
+B004,Sunita Rathore,Flower seller,Madhya Pradesh,2025-11,13888,3453,4426,185,3295,3295,4
+B004,Sunita Rathore,Flower seller,Madhya Pradesh,2025-12,13459,3483,4550,176,3295,3295,0
+B004,Sunita Rathore,Flower seller,Madhya Pradesh,2026-01,13380,3453,4576,172,3295,3295,0
+B004,Sunita Rathore,Flower seller,Madhya Pradesh,2026-02,13286,3433,4361,171,3295,3295,0
+B004,Sunita Rathore,Flower seller,Madhya Pradesh,2026-03,12948,3522,4177,164,3295,3295,0
+B004,Sunita Rathore,Flower seller,Madhya Pradesh,2026-04,12402,3448,4121,168,3295,3295,0
+B004,Sunita Rathore,Flower seller,Madhya Pradesh,2026-05,12088,3425,3918,161,3295,3295,0
+B004,Sunita Rathore,Flower seller,Madhya Pradesh,2026-06,12060,3419,3972,151,3295,3295,0
+B004,Sunita Rathore,Flower seller,Madhya Pradesh,2026-07,11991,3491,3987,152,3295,3295,0
+B004,Sunita Rathore,Flower seller,Madhya Pradesh,2026-08,12280,3525,4154,156,3295,3295,0
+B004,Sunita Rathore,Flower seller,Madhya Pradesh,2026-09,12223,3451,4718,161,3295,3295,0
+B005,Rajesh Mishra,Flower seller,Madhya Pradesh,2024-11,16450,3925,6210,220,3122,3122,0
+B005,Rajesh Mishra,Flower seller,Madhya Pradesh,2024-12,16734,3893,6362,227,3122,3122,0
+B005,Rajesh Mishra,Flower seller,Madhya Pradesh,2025-01,17085,3919,6651,230,3122,3122,0
+B005,Rajesh Mishra,Flower seller,Madhya Pradesh,2025-02,17158,3868,6526,225,3122,3122,0
+B005,Rajesh Mishra,Flower seller,Madhya Pradesh,2025-03,17110,3940,6518,227,3122,3122,0
+B005,Rajesh Mishra,Flower seller,Madhya Pradesh,2025-04,17312,3864,6643,232,3122,3122,0
+B005,Rajesh Mishra,Flower seller,Madhya Pradesh,2025-05,17208,3843,6792,232,3122,3122,0
+B005,Rajesh Mishra,Flower seller,Madhya Pradesh,2025-06,17261,3877,6918,237,3122,3122,0
+B005,Rajesh Mishra,Flower seller,Madhya Pradesh,2025-07,17747,3822,6995,231,3122,3122,0
+B005,Rajesh Mishra,Flower seller,Madhya Pradesh,2025-08,17635,3966,7518,246,3122,3122,0
+B005,Rajesh Mishra,Flower seller,Madhya Pradesh,2025-09,19044,3836,8250,258,3122,3122,0
+B005,Rajesh Mishra,Flower seller,Madhya Pradesh,2025-10,20411,3926,8639,278,3122,3122,0
+B005,Rajesh Mishra,Flower seller,Madhya Pradesh,2025-11,21081,3972,8140,300,3122,3122,0
+B005,Rajesh Mishra,Flower seller,Madhya Pradesh,2025-12,21062,3896,8682,281,3122,3122,0
+B005,Rajesh Mishra,Flower seller,Madhya Pradesh,2026-01,21171,3960,8700,293,3122,3122,0
+B005,Rajesh Mishra,Flower seller,Madhya Pradesh,2026-02,21550,3819,8200,292,3122,3122,0
+B005,Rajesh Mishra,Flower seller,Madhya Pradesh,2026-03,21983,3875,8667,293,3122,3122,0
+B005,Rajesh Mishra,Flower seller,Madhya Pradesh,2026-04,21791,3897,8558,298,3122,3122,0
+B005,Rajesh Mishra,Flower seller,Madhya Pradesh,2026-05,21972,3972,8656,298,3122,3122,0
+B005,Rajesh Mishra,Flower seller,Madhya Pradesh,2026-06,21736,3879,8625,286,3122,3122,0
+B005,Rajesh Mishra,Flower seller,Madhya Pradesh,2026-07,21127,3889,8936,294,3122,3122,0
+B005,Rajesh Mishra,Flower seller,Madhya Pradesh,2026-08,22180,3845,9385,297,3122,3122,1
+B005,Rajesh Mishra,Flower seller,Madhya Pradesh,2026-09,23639,3872,9908,313,3122,3122,0
+B006,Kavita Verma,Construction laborer,Karnataka,2024-09,3921,1483,2443,46,1347,0,34
+B006,Kavita Verma,Construction laborer,Karnataka,2024-10,6662,1504,2957,81,1347,1347,0
+B006,Kavita Verma,Construction laborer,Karnataka,2024-11,8161,1486,2994,97,1347,1347,0
+B006,Kavita Verma,Construction laborer,Karnataka,2024-12,8469,1458,2673,98,1347,1347,0
+B006,Kavita Verma,Construction laborer,Karnataka,2025-01,7645,1469,2715,91,1347,1347,0
+B006,Kavita Verma,Construction laborer,Karnataka,2025-02,7418,1478,2505,89,1347,1347,0
+B006,Kavita Verma,Construction laborer,Karnataka,2025-03,6665,1489,2505,79,1347,1347,0
+B006,Kavita Verma,Construction laborer,Karnataka,2025-04,6979,1491,2134,78,1347,1347,0
+B006,Kavita Verma,Construction laborer,Karnataka,2025-05,6130,1494,1137,72,1347,1347,0
+B006,Kavita Verma,Construction laborer,Karnataka,2025-06,3221,1478,935,39,1347,591,17
+B006,Kavita Verma,Construction laborer,Karnataka,2025-07,2650,1451,958,30,1347,190,21
+B006,Kavita Verma,Construction laborer,Karnataka,2025-08,2661,1489,1383,31,1347,0,29
+B006,Kavita Verma,Construction laborer,Karnataka,2025-09,3892,1463,2473,48,1347,0,31
+B006,Kavita Verma,Construction laborer,Karnataka,2025-10,6800,1487,2963,79,1347,1347,0
+B006,Kavita Verma,Construction laborer,Karnataka,2025-11,8431,1480,2837,94,1347,1347,0
+B006,Kavita Verma,Construction laborer,Karnataka,2025-12,8293,1501,2626,94,1347,1347,0
+B006,Kavita Verma,Construction laborer,Karnataka,2026-01,7701,1492,2617,86,1347,1347,0
+B006,Kavita Verma,Construction laborer,Karnataka,2026-02,7406,1471,2443,90,1347,1347,0
+B006,Kavita Verma,Construction laborer,Karnataka,2026-03,6837,1489,2397,81,1347,1347,0
+B006,Kavita Verma,Construction laborer,Karnataka,2026-04,6767,1478,2117,79,1347,1347,0
+B006,Kavita Verma,Construction laborer,Karnataka,2026-05,6009,1466,1146,73,1347,1347,0
+B006,Kavita Verma,Construction laborer,Karnataka,2026-06,3237,1475,912,39,1347,1347,0
+B006,Kavita Verma,Construction laborer,Karnataka,2026-07,2678,1474,906,31,1347,212,24
+B006,Kavita Verma,Construction laborer,Karnataka,2026-08,2657,1465,1410,30,1347,0,31
+B006,Kavita Verma,Construction laborer,Karnataka,2026-09,4070,1494,2503,46,1347,61,34
+B007,Anita Das,Construction laborer,Rajasthan,2024-12,18546,3968,7637,108,4169,4169,4
+B007,Anita Das,Construction laborer,Rajasthan,2025-01,17815,3908,7466,110,4169,4169,0
+B007,Anita Das,Construction laborer,Rajasthan,2025-02,18459,3930,7622,109,4169,4169,0
+B007,Anita Das,Construction laborer,Rajasthan,2025-03,17576,3924,7368,105,4169,4169,0
+B007,Anita Das,Construction laborer,Rajasthan,2025-04,18142,3956,7288,108,4169,4169,0
+B007,Anita Das,Construction laborer,Rajasthan,2025-05,18324,3971,7122,107,4169,4169,0
+B007,Anita Das,Construction laborer,Rajasthan,2025-06,17527,3987,6798,103,4169,4169,0
+B007,Anita Das,Construction laborer,Rajasthan,2025-07,17050,3920,6854,100,4169,4169,0
+B007,Anita Das,Construction laborer,Rajasthan,2025-08,16962,3862,7185,101,4169,4169,1
+B007,Anita Das,Construction laborer,Rajasthan,2025-09,17285,3948,7349,106,4169,4169,1
+B007,Anita Das,Construction laborer,Rajasthan,2025-10,18258,3847,7532,106,4169,4169,0
+B007,Anita Das,Construction laborer,Rajasthan,2025-11,18707,3875,7653,108,4169,4169,0
+B007,Anita Das,Construction laborer,Rajasthan,2025-12,18376,3883,7677,112,4169,4169,0
+B007,Anita Das,Construction laborer,Rajasthan,2026-01,18436,3896,7686,110,4169,4169,0
+B007,Anita Das,Construction laborer,Rajasthan,2026-02,17761,3939,7548,108,4169,4169,0
+B007,Anita Das,Construction laborer,Rajasthan,2026-03,17674,4001,7407,107,4169,4169,0
+B007,Anita Das,Construction laborer,Rajasthan,2026-04,10865,3929,4280,66,4169,4169,0
+B007,Anita Das,Construction laborer,Rajasthan,2026-05,4232,3929,1700,25,4169,0,31
+B007,Anita Das,Construction laborer,Rajasthan,2026-06,5963,3966,2430,35,4169,0,31
+B007,Anita Das,Construction laborer,Rajasthan,2026-07,7518,3973,3051,45,4169,413,26
+B007,Anita Das,Construction laborer,Rajasthan,2026-08,9084,3980,3999,54,4169,1056,25
+B007,Anita Das,Construction laborer,Rajasthan,2026-09,11032,3963,4724,69,4169,2039,13
+B008,Geeta Pillai,Construction laborer,Rajasthan,2025-04,16753,3640,5893,78,4559,4559,0
+B008,Geeta Pillai,Construction laborer,Rajasthan,2025-05,16672,3684,5509,76,4559,4559,0
+B008,Geeta Pillai,Construction laborer,Rajasthan,2025-06,15177,3680,5474,72,4559,4559,0
+B008,Geeta Pillai,Construction laborer,Rajasthan,2025-07,15509,3700,5466,72,4559,4559,0
+B008,Geeta Pillai,Construction laborer,Rajasthan,2025-08,15668,3738,5398,70,4559,4559,0
+B008,Geeta Pillai,Construction laborer,Rajasthan,2025-09,15632,3626,6004,71,4559,4559,0
+B008,Geeta Pillai,Construction laborer,Rajasthan,2025-10,17179,3764,6303,80,4559,4559,0
+B008,Geeta Pillai,Construction laborer,Rajasthan,2025-11,17246,3717,6073,82,4559,4559,0
+B008,Geeta Pillai,Construction laborer,Rajasthan,2025-12,17137,3763,6245,79,4559,4559,0
+B008,Geeta Pillai,Construction laborer,Rajasthan,2026-01,17122,3706,6145,78,4559,4559,0
+B008,Geeta Pillai,Construction laborer,Rajasthan,2026-02,17294,3685,6018,78,4559,4559,0
+B008,Geeta Pillai,Construction laborer,Rajasthan,2026-03,17042,3718,5993,77,4559,4559,0
+B008,Geeta Pillai,Construction laborer,Rajasthan,2026-04,16990,3750,5820,79,4559,4559,0
+B008,Geeta Pillai,Construction laborer,Rajasthan,2026-05,16422,3688,5458,75,4559,4559,0
+B008,Geeta Pillai,Construction laborer,Rajasthan,2026-06,15846,3627,5305,72,4559,4559,2
+B008,Geeta Pillai,Construction laborer,Rajasthan,2026-07,15094,3710,5332,72,4559,4559,0
+B008,Geeta Pillai,Construction laborer,Rajasthan,2026-08,15599,3684,5692,69,4559,4559,0
+B008,Geeta Pillai,Construction laborer,Rajasthan,2026-09,15648,3676,5890,71,4559,4559,0
+B009,Pooja Kohli,Construction laborer,Assam,2024-10,6994,1360,2315,223,2001,2001,0
+B009,Pooja Kohli,Construction laborer,Assam,2024-11,7402,1395,2340,230,2001,2001,0
+B009,Pooja Kohli,Construction laborer,Assam,2024-12,7456,1387,2372,229,2001,2001,0
+B009,Pooja Kohli,Construction laborer,Assam,2025-01,7389,1365,2278,229,2001,2001,0
+B009,Pooja Kohli,Construction laborer,Assam,2025-02,7155,1398,2237,228,2001,2001,0
+B009,Pooja Kohli,Construction laborer,Assam,2025-03,7122,1371,2186,219,2001,2001,0
+B009,Pooja Kohli,Construction laborer,Assam,2025-04,6961,1365,2222,226,2001,2001,0
+B009,Pooja Kohli,Construction laborer,Assam,2025-05,6790,1391,2017,215,2001,2001,0
+B009,Pooja Kohli,Construction laborer,Assam,2025-06,6035,1360,1854,199,2001,2001,0
+B009,Pooja Kohli,Construction laborer,Assam,2025-07,5818,1346,1857,191,2001,2001,0
+B009,Pooja Kohli,Construction laborer,Assam,2025-08,5752,1390,2013,192,2001,2001,0
+B009,Pooja Kohli,Construction laborer,Assam,2025-09,6171,1366,2336,204,2001,2001,0
+B009,Pooja Kohli,Construction laborer,Assam,2025-10,6907,1359,2438,229,2001,2001,0
+B009,Pooja Kohli,Construction laborer,Assam,2025-11,7617,1390,2439,232,2001,2001,0
+B009,Pooja Kohli,Construction laborer,Assam,2025-12,7577,1394,2284,241,2001,2001,0
+B009,Pooja Kohli,Construction laborer,Assam,2026-01,7045,1357,2249,227,2001,2001,0
+B009,Pooja Kohli,Construction laborer,Assam,2026-02,7284,1375,2302,231,2001,2001,0
+B009,Pooja Kohli,Construction laborer,Assam,2026-03,7219,1348,2329,227,2001,2001,0
+B009,Pooja Kohli,Construction laborer,Assam,2026-04,7143,1375,2236,218,2001,2001,1
+B009,Pooja Kohli,Construction laborer,Assam,2026-05,7041,1385,1951,215,2001,2001,0
+B009,Pooja Kohli,Construction laborer,Assam,2026-06,6073,1346,1904,195,2001,2001,1
+B009,Pooja Kohli,Construction laborer,Assam,2026-07,6022,1348,1844,190,2001,2001,0
+B009,Pooja Kohli,Construction laborer,Assam,2026-08,5782,1388,1969,186,2001,2001,0
+B009,Pooja Kohli,Construction laborer,Assam,2026-09,6252,1365,2186,196,2001,2001,0
+B010,Ashok Patel,Construction laborer,Assam,2026-02,6343,1296,2158,66,1875,1875,0
+B010,Ashok Patel,Construction laborer,Assam,2026-03,6385,1284,2217,62,1875,1875,0
+B010,Ashok Patel,Construction laborer,Assam,2026-04,6595,1275,2186,65,1875,1875,0
+B010,Ashok Patel,Construction laborer,Assam,2026-05,6442,1281,2011,64,1875,1875,0
+B010,Ashok Patel,Construction laborer,Assam,2026-06,5837,1278,1935,60,1875,1875,0
+B010,Ashok Patel,Construction laborer,Assam,2026-07,5739,1274,2057,56,1875,1875,0
+B010,Ashok Patel,Construction laborer,Assam,2026-08,5732,1254,2079,58,1875,1875,0
+B010,Ashok Patel,Construction laborer,Assam,2026-09,6094,1267,2135,61,1875,1875,0
