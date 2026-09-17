@@ -8,8 +8,8 @@
 
 html,
 body {
-  background-color: #0b0e14;
-  color: #e6e9f0;
+  background-color: #081918;
+  color: #eef4f0;
 }
 
 body {
@@ -20,14 +20,38 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
+/* The two glass surfaces the spec allows: floating evidence panel + hover readout. */
+.glass {
+  background: rgba(18, 48, 41, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(159, 184, 176, 0.14);
+}
+
+:focus-visible {
+  outline: 2px solid #3fb2a0;
+  outline-offset: 2px;
+}
+
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: #0b0e14;
+  background: #081918;
 }
 ::-webkit-scrollbar-thumb {
-  background: #232938;
+  background: #1c3c35;
   border-radius: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }

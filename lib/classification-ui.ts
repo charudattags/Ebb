@@ -6,7 +6,7 @@ export const CLASSIFICATION_META: Record<
 > = {
   SEASONAL: {
     label: "Seasonal dip",
-    color: "#3aa0ff",
+    color: "#3fb2a0",
     bg: "bg-class-seasonal/10",
     border: "border-class-seasonal/40",
     text: "text-class-seasonal",
@@ -15,7 +15,7 @@ export const CLASSIFICATION_META: Record<
   },
   STRUCTURAL: {
     label: "Structural decline",
-    color: "#ff5c6c",
+    color: "#e2604c",
     bg: "bg-class-structural/10",
     border: "border-class-structural/40",
     text: "text-class-structural",
@@ -24,7 +24,7 @@ export const CLASSIFICATION_META: Record<
   },
   TEMPORARY: {
     label: "Temporary shock",
-    color: "#f5a623",
+    color: "#e0a53a",
     bg: "bg-class-temporary/10",
     border: "border-class-temporary/40",
     text: "text-class-temporary",
@@ -33,7 +33,7 @@ export const CLASSIFICATION_META: Record<
   },
   IMPROVING: {
     label: "Improving",
-    color: "#3ecf8e",
+    color: "#93d9ab",
     bg: "bg-class-improving/10",
     border: "border-class-improving/40",
     text: "text-class-improving",
@@ -42,7 +42,7 @@ export const CLASSIFICATION_META: Record<
   },
   STABLE: {
     label: "Stable",
-    color: "#8b93a7",
+    color: "#8aa39d",
     bg: "bg-class-stable/10",
     border: "border-class-stable/40",
     text: "text-class-stable",

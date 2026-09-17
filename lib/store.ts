@@ -18,12 +18,26 @@ type EbbState = {
   datasetLabel: string;
   importWarnings: ImportWarning[];
   decisions: Record<string, OfficerDecision>;
+  soundOn: boolean;
 
   loadDataset: (borrowers: Borrower[], cohorts: Cohort[], label: string, warnings?: ImportWarning[]) => void;
   resetToDemo: () => void;
   setDecision: (borrowerId: string, decision: OfficerDecision) => void;
   clearDecision: (borrowerId: string) => void;
+  toggleSound: () => void;
+  addBorrower: (borrower: Borrower) => void;
 };
+
+const SOUND_KEY = "ebb-sound-on";
+
+function readInitialSoundPref(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    return window.localStorage.getItem(SOUND_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
 
 export const useEbbStore = create<EbbState>((set) => ({
   borrowers: DEMO_BORROWERS,
@@ -31,6 +45,7 @@ export const useEbbStore = create<EbbState>((set) => ({
   datasetLabel: "Demo data (50 borrowers)",
   importWarnings: [],
   decisions: {},
+  soundOn: readInitialSoundPref(),
 
   loadDataset: (borrowers, cohorts, label, warnings = []) =>
     set({ borrowers, cohorts, datasetLabel: label, importWarnings: warnings, decisions: {} }),
@@ -53,6 +68,23 @@ export const useEbbStore = create<EbbState>((set) => ({
       delete next[borrowerId];
       return { decisions: next };
     }),
+
+  toggleSound: () =>
+    set((state) => {
+      const next = !state.soundOn;
+      try {
+        window.localStorage.setItem(SOUND_KEY, next ? "1" : "0");
+      } catch {
+        // best-effort persistence only
+      }
+      return { soundOn: next };
+    }),
+
+  addBorrower: (borrower) =>
+    set((state) => ({
+      borrowers: [...state.borrowers.filter((b) => b.id !== borrower.id), borrower],
+      datasetLabel: state.datasetLabel.startsWith("Demo data") ? "Demo data + 1 added" : state.datasetLabel,
+    })),
 }));
 
 export function useBorrower(id: string): Borrower | undefined {
