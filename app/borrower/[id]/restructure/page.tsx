@@ -62,10 +62,15 @@ export default function RestructurePage() {
       </div>
 
       {existingDecision && (
-        <div className="rounded-lg border border-class-improving/40 bg-class-improving/10 px-4 py-3 text-sm text-class-improving">
-          Recorded: <span className="font-medium">{existingDecision.status.replace(/_/g, " ")}</span> —{" "}
-          {optionByKey.get(existingDecision.optionKey!)?.label}
-          {existingDecision.note && <span className="text-ink-dim"> · "{existingDecision.note}"</span>}
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-class-improving/40 bg-class-improving/10 px-4 py-3 text-sm text-class-improving">
+          <span>
+            Recorded: <span className="font-medium">{existingDecision.status.replace(/_/g, " ")}</span> —{" "}
+            {optionByKey.get(existingDecision.optionKey!)?.label}
+            {existingDecision.note && <span className="text-ink-dim"> · "{existingDecision.note}"</span>}
+          </span>
+          <Link href={`/borrower/${borrower.id}/view`} className="whitespace-nowrap text-class-improving underline hover:text-ink">
+            See what she'd receive →
+          </Link>
         </div>
       )}
 

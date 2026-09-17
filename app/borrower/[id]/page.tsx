@@ -49,6 +49,12 @@ export default function BorrowerDetailPage() {
           <StatTile label="This month's surplus" value={formatINR(last.income - last.expenses_essential - last.expenses_business)} />
           <StatTile label="Principal" value={formatINRCompact(borrower.principal)} />
           <Link
+            href={`/borrower/${borrower.id}/view`}
+            className="flex items-center rounded-lg border border-bg-border px-4 py-2 text-sm text-ink-dim transition hover:border-ink-faint hover:text-ink"
+          >
+            What she'd see →
+          </Link>
+          <Link
             href={`/borrower/${borrower.id}/restructure`}
             className="flex items-center rounded-lg border border-class-seasonal/40 bg-class-seasonal/10 px-4 py-2 text-sm font-medium text-class-seasonal transition hover:bg-class-seasonal/20"
           >
